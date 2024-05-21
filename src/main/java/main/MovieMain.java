@@ -39,7 +39,6 @@ public class MovieMain {
         movieViewer.setMovieGradeViewer(movieGradeViewer);
 
         movieGradeViewer.setScanner(scanner);
-        movieGradeViewer.setUserController(userController);
         movieGradeViewer.setMovieController(movieController);
         movieGradeViewer.setMovieGradeController(movieGradeController);
 
