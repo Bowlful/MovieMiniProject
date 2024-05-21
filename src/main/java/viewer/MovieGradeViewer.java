@@ -14,7 +14,6 @@ import java.util.Scanner;
 @Setter
 public class MovieGradeViewer {
     private Scanner scanner;
-    private UserController userController;
     private MovieController movieController;
     private MovieGradeController movieGradeController;
 
@@ -77,18 +76,35 @@ public class MovieGradeViewer {
 
     // 평점 입력
     public void insetMovieGrade(int movieId, int writerId, int writerGrade) {
-        MovieGradeDTO movieGradeDTO = new MovieGradeDTO();
-        movieGradeDTO.setMovieId(movieId);
-        movieGradeDTO.setWriterId(writerId);
+        MovieGradeDTO movieGrade = movieGradeController.selectOneByMovieIdAndWriterId(movieId, writerId);
 
-        String message = "평점은 몇입니까?(1~5)";
-        movieGradeDTO.setGrade(ScannerUtil.nextInt(scanner, message, 1, 5));
+        String message;
+        if(movieGrade != null) {
+            System.out.println("등록한 평점을 수정합니다.");
+            message = "평점은 몇입니까?(1~5)";
+            movieGrade.setGrade(ScannerUtil.nextInt(scanner, message, 1, 5));
 
-        if(writerGrade == 2) {
-            message = "영화에 대한 평론을 해주세요.";
-            movieGradeDTO.setReview(ScannerUtil.nextLine(scanner, message));
+            if(writerGrade == 2) {
+                message = "영화에 대한 평론을 해주세요.";
+                movieGrade.setReview(ScannerUtil.nextLine(scanner, message));
+            }
+
+            movieGradeController.update(movieGrade);
+        } else {
+            MovieGradeDTO newMovieGrade = new MovieGradeDTO();
+            newMovieGrade.setMovieId(movieId);
+            newMovieGrade.setWriterId(writerId);
+
+            message = "평점은 몇입니까?(1~5)";
+            newMovieGrade.setGrade(ScannerUtil.nextInt(scanner, message, 1, 5));
+
+            if(writerGrade == 2) {
+                message = "영화에 대한 평론을 해주세요.";
+                newMovieGrade.setReview(ScannerUtil.nextLine(scanner, message));
+            }
+
+            movieGradeController.insert(newMovieGrade);
         }
 
-        movieGradeController.insert(movieGradeDTO);
     }
 }

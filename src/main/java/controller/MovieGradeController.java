@@ -18,8 +18,16 @@ public class MovieGradeController {
         nextId = 1;
     }
 
-    public ArrayList<MovieGradeDTO> selectAll() {
-        return list;
+    public MovieGradeDTO selectOneByMovieIdAndWriterId(int movieId, int writerId) {
+        MovieGradeDTO temp = new MovieGradeDTO();
+        temp.setMovieId(movieId);
+        temp.setWriterId(writerId);
+        for(MovieGradeDTO movieGrade : list) {
+            if(movieGrade.getMovieId() == movieId && movieGrade.getWriterId() == writerId) {
+                return movieGrade;
+            }
+        }
+        return null;
     }
 
     public ArrayList<MovieGradeDTO> selectByMovieId(int movieId) {
@@ -88,6 +96,10 @@ public class MovieGradeController {
     public void insert(MovieGradeDTO movieGrade) {
         movieGrade.setId(nextId++);
         list.add(movieGrade);
+    }
+
+    public void update(MovieGradeDTO movieGrade) {
+        list.set(list.indexOf(movieGrade), movieGrade);
     }
 
 }

@@ -1,7 +1,6 @@
 package main;
 
 import controller.*;
-import model.UserDTO;
 import viewer.*;
 
 import java.util.Scanner;
