@@ -2,7 +2,6 @@ package viewer;
 
 import controller.CinemaController;
 import controller.MovieController;
-import controller.MovieGradeController;
 import controller.ScreenInfoController;
 import lombok.Setter;
 import model.CinemaDTO;
@@ -12,17 +11,15 @@ import util.ScannerUtil;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@Setter
 public class CinemaViewer {
 
-    @Setter
     private Scanner scanner;
-    @Setter
     private CinemaController cinemaController;
-    @Setter
     private MovieController movieController;
-    @Setter
     private ScreenInfoController screenInfoController;
 
+    // 극장 메인
     public void showCinema() {
         String message = "1. 극장 목록 보기 2. 뒤로가기";
         while (true) {
@@ -36,6 +33,7 @@ public class CinemaViewer {
         }
     }
 
+    // 극장 목록
     private void printCinemaList() {
         ArrayList<CinemaDTO> cinemaList = cinemaController.selectAll();
         for(CinemaDTO cinema : cinemaList) {
@@ -51,17 +49,14 @@ public class CinemaViewer {
         }
 
         if(userChoice != 0) {
-            printCinemaOne(userChoice);
+            cinemaDetail(userChoice);
         }
     }
 
-    private void printCinemaOne(int id) {
+    // 극장 상세
+    private void cinemaDetail(int id) {
         CinemaDTO cinema = cinemaController.selectOne(id);
-        System.out.println("=================================");
-        System.out.println("극장 이름 : " + cinema.getCinemaName());
-        System.out.println("극장 주소 : " + cinema.getCinemaAddress());
-        System.out.println("극장 전화번호 : " + cinema.getCinemaPhoneNumber());
-        System.out.println("=================================");
+        printCinemaOne(cinema);
 
         ArrayList<ScreenInfoDTO> screenInfoList = screenInfoController.selectAll();
         if(!screenInfoList.isEmpty()) {
@@ -76,5 +71,14 @@ public class CinemaViewer {
             System.out.println("상영 정보가 없습니다.");
             System.out.println("=================================");
         }
+    }
+
+    // 극장 상세 출력
+    public void printCinemaOne(CinemaDTO cinema) {
+        System.out.println("=================================");
+        System.out.println("극장 이름 : " + cinema.getCinemaName());
+        System.out.println("극장 주소 : " + cinema.getCinemaAddress());
+        System.out.println("극장 전화번호 : " + cinema.getCinemaPhoneNumber());
+        System.out.println("=================================");
     }
 }

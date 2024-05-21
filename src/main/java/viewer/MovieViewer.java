@@ -11,25 +11,19 @@ import util.ScannerUtil;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@Setter
 public class MovieViewer {
 
-    @Setter
     private Scanner scanner;
-    @Setter
     private UserController userController;
-    @Setter
     private MovieController movieController;
-    @Setter
     private MovieGradeController movieGradeController;
-    @Setter
     private MovieGradeViewer movieGradeViewer;
-    @Setter
     private ScreenInfoController screenInfoController;
-    @Setter
     private CinemaController cinemaController;
-    @Setter
     private UserDTO logIn;
 
+    // 영화 메인
     public void showMovie() {
 
         String message = "1. 영화 목록 보기 2. 영화 평점 보기 3. 뒤로가기";
@@ -46,6 +40,7 @@ public class MovieViewer {
         }
     }
 
+    // 영화 목록 출력
     private void printMovieList() {
 
         ArrayList<MovieDTO> movieList = movieController.selectAll();
@@ -65,21 +60,16 @@ public class MovieViewer {
             }
 
             if(userChoice != 0) {
-                printMovieOne(userChoice);
+                movieDetail(userChoice);
             }
         }
 
     }
 
-    private void printMovieOne(int id) {
+    // 영화 상세 정보
+    private void movieDetail(int id) {
         MovieDTO movie = movieController.selectOne(id);
-        System.out.println("=================================");
-        System.out.println("영화 제목 : " + movie.getTitle());
-        System.out.println("영화 등급 : " + movie.getGrade());
-        System.out.println("---------------------------------");
-        System.out.println("영화 줄거리");
-        System.out.println(movie.getSummary());
-        System.out.println("=================================");
+        printMovieOne(movie);
 
         ArrayList<ScreenInfoDTO> screenInfoList = screenInfoController.selectAll();
         if(!screenInfoList.isEmpty()) {
@@ -115,10 +105,21 @@ public class MovieViewer {
 
         if(userChoice == 1) {
             movieGradeViewer.insetMovieGrade(id, logIn.getUid(), logIn.getGrade());
-            printMovieOne(id);
+            movieDetail(id);
         } else {
             printMovieList();
         }
+    }
+
+    // 영화 상세 출력
+    public void printMovieOne(MovieDTO movie) {
+        System.out.println("=================================");
+        System.out.println("영화 제목 : " + movie.getTitle());
+        System.out.println("영화 등급 : " + movie.getGrade());
+        System.out.println("---------------------------------");
+        System.out.println("영화 줄거리");
+        System.out.println(movie.getSummary());
+        System.out.println("=================================");
     }
 
 }

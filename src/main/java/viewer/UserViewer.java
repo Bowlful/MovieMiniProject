@@ -23,6 +23,7 @@ public class UserViewer {
     @Getter
     private UserDTO logIn;
 
+    // 로그인 화면 메인
     public void showIndex() {
         String message = "1. 로그인 2. 회원가입 3. 프로그램 종료";
         while (true) {
@@ -43,6 +44,7 @@ public class UserViewer {
         }
     }
 
+    // 로그인
     private void auth() {
         String message;
         message = "아이디를 입력해주세요.";
@@ -58,6 +60,7 @@ public class UserViewer {
         }
     }
 
+    // 회원가입
     private void register() {
         String message = "사용하실 아이디를 입력해주세요.";
         String id = ScannerUtil.nextLine(scanner, message);
@@ -81,8 +84,10 @@ public class UserViewer {
         }
     }
 
+    // 로그인 성공 화면
     private void showMenu() {
         if(logIn.getGrade() == 3) {
+            // 로그인 성공 관리자 화면
             String message = "1. 영화 2. 극장 3. 관리자 화면 4. 로그아웃";
             while (logIn != null) {
                 int userChoice = ScannerUtil.nextInt(scanner, message);
@@ -98,6 +103,7 @@ public class UserViewer {
                 }
             }
         } else {
+            // 로그인 성공 일반 유저 화면
             String message = "1. 영화 보기 2. 극장 보기 3. 회원 정보 수정 4. 로그아웃";
             while (logIn != null) {
                 int userChoice = ScannerUtil.nextInt(scanner, message);
@@ -115,6 +121,7 @@ public class UserViewer {
         }
     }
 
+    // 회원 정보 출력
     private void printInfo() {
         System.out.println("========================");
         System.out.println(logIn.getId() + " 회원님의 정보");
@@ -136,6 +143,7 @@ public class UserViewer {
 
     }
 
+    // 회원 정보 수정
     private void update() {
         String message = "새로운 닉네임을 입력해주세요.";
         String newNickname = ScannerUtil.nextLine(scanner, message);
@@ -155,6 +163,7 @@ public class UserViewer {
         }
     }
 
+    // 회원 정보 삭제
     private void delete() {
         String message = "정말로 탈퇴하시겠습니까? Y/N";
         String answer = ScannerUtil.nextLine(scanner, message);

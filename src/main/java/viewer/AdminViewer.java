@@ -14,20 +14,19 @@ import util.ScannerUtil;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@Setter
 public class AdminViewer {
 
-    @Setter
     private Scanner scanner;
-    @Setter
     private UserController userController;
-    @Setter
     private MovieController movieController;
-    @Setter
     private CinemaController cinemaController;
-    @Setter
     private ScreenInfoController screenInfoController;
+    private CinemaViewer cinemaViewer;
+    private MovieViewer movieViewer;
 
-    public void showAdminMenu(){
+    //관리자화면 메인
+    public void showAdminMenu() {
         String message = "1. 영화 등록 및 수정 2. 극장 등록 및 수정 3. 상영 정보 등록 및 수정 4. 회원 등급 수정 5. 뒤로 가기";
         while (true) {
             int adminChoice = ScannerUtil.nextInt(scanner, message);
@@ -47,6 +46,7 @@ public class AdminViewer {
         }
     }
 
+    //상영정보 메인
     private void screenInfoEdit() {
         String message = "1. 상영 정보 등록 2. 상영 정보 수정 3. 뒤로가기";
         int adminChoice = ScannerUtil.nextInt(scanner, message);
@@ -58,6 +58,7 @@ public class AdminViewer {
         }
     }
 
+    //상영정보 리스트
     private void printScreenInfoList() {
         ArrayList<ScreenInfoDTO> screenInfoList = screenInfoController.selectAll();
         for(ScreenInfoDTO screenInfo : screenInfoList) {
@@ -77,6 +78,7 @@ public class AdminViewer {
         }
     }
 
+    //상영정보 상세
     private void printScreenInfoOne(int id) {
         ScreenInfoDTO screenInfo = screenInfoController.selectOne(id);
         System.out.println("=================================");
@@ -96,49 +98,7 @@ public class AdminViewer {
         }
     }
 
-    private void screenInfoDelete(int id) {
-        String message = "정말로 삭제하시겠습니까? Y/N";
-        String answer = ScannerUtil.nextLine(scanner, message);
-        if (answer.equalsIgnoreCase("Y")) {
-            screenInfoController.delete(id);
-            System.out.println("상영정보가 삭제 되었습니다.");
-        }
-    }
-
-    private void screenInfoUpDate(ScreenInfoDTO screenInfo) {
-        String message;
-        ArrayList<MovieDTO> movieList = movieController.selectAll();
-
-        if(!movieList.isEmpty()) {
-            for(MovieDTO movie : movieList) {
-                System.out.printf("%d. %s\n", movie.getId(), movie.getTitle());
-            }
-            message = "상영 영화를 다시 선택해주세요";
-            screenInfo.setMovieId(ScannerUtil.nextInt(scanner, message, 1, movieList.size()));
-        } else {
-            System.out.println("상영할 영화가 없습니다.");
-            return;
-        }
-
-        ArrayList<CinemaDTO> cinemaList = cinemaController.selectAll();
-
-        if(!cinemaList.isEmpty()) {
-            for(CinemaDTO cinema : cinemaList) {
-                System.out.printf("%d. %s\n", cinema.getId(), cinema.getCinemaName());
-            }
-            message = "상영할 극장을 다시 선택해주세요";
-            screenInfo.setCinemaId(ScannerUtil.nextInt(scanner, message, 1, cinemaList.size()));
-        } else {
-            System.out.println("상영할 극장이 없습니다.");
-            return;
-        }
-
-        message = "상영할 시간을 선택해주세요(ex. 1시, 2시, 3시...)";
-        screenInfo.setScreenTime(ScannerUtil.nextLine(scanner, message));
-
-        screenInfoController.update(screenInfo);
-    }
-
+    // 상영정보 입력
     private void screenInfoInsert() {
         ScreenInfoDTO screenInfo = new ScreenInfoDTO();
         String message;
@@ -175,6 +135,52 @@ public class AdminViewer {
 
     }
 
+    //상영정보 수정
+    private void screenInfoUpDate(ScreenInfoDTO screenInfo) {
+        String message;
+        ArrayList<MovieDTO> movieList = movieController.selectAll();
+
+        if(!movieList.isEmpty()) {
+            for(MovieDTO movie : movieList) {
+                System.out.printf("%d. %s\n", movie.getId(), movie.getTitle());
+            }
+            message = "상영 영화를 다시 선택해주세요";
+            screenInfo.setMovieId(ScannerUtil.nextInt(scanner, message, 1, movieList.size()));
+        } else {
+            System.out.println("상영할 영화가 없습니다.");
+            return;
+        }
+
+        ArrayList<CinemaDTO> cinemaList = cinemaController.selectAll();
+
+        if(!cinemaList.isEmpty()) {
+            for(CinemaDTO cinema : cinemaList) {
+                System.out.printf("%d. %s\n", cinema.getId(), cinema.getCinemaName());
+            }
+            message = "상영할 극장을 다시 선택해주세요";
+            screenInfo.setCinemaId(ScannerUtil.nextInt(scanner, message, 1, cinemaList.size()));
+        } else {
+            System.out.println("상영할 극장이 없습니다.");
+            return;
+        }
+
+        message = "상영할 시간을 선택해주세요(ex. 1시, 2시, 3시...)";
+        screenInfo.setScreenTime(ScannerUtil.nextLine(scanner, message));
+
+        screenInfoController.update(screenInfo);
+    }
+
+    // 상영정보 삭제
+    private void screenInfoDelete(int id) {
+        String message = "정말로 삭제하시겠습니까? Y/N";
+        String answer = ScannerUtil.nextLine(scanner, message);
+        if (answer.equalsIgnoreCase("Y")) {
+            screenInfoController.delete(id);
+            System.out.println("상영정보가 삭제 되었습니다.");
+        }
+    }
+
+    // 극장 메인
     private void cinemaEdit() {
         String message = "1. 극장 등록 2. 극장 정보 수정 3. 뒤로가기";
         int adminChoice = ScannerUtil.nextInt(scanner, message);
@@ -186,21 +192,7 @@ public class AdminViewer {
         }
     }
 
-    private void cinemaInsert() {
-        CinemaDTO cinema = new CinemaDTO();
-
-        String message = "극장 이름을 입력하세요";
-        cinema.setCinemaName(ScannerUtil.nextLine(scanner, message));
-
-        message = "극장 위치를 입력하세요";
-        cinema.setCinemaAddress(ScannerUtil.nextLine(scanner, message));
-
-        message = "극장 전화번호를 입력하세요";
-        cinema.setCinemaPhoneNumber(ScannerUtil.nextInt(scanner, message));
-
-        cinemaController.insert(cinema);
-    }
-
+    // 극장 목록
     private void printCinemaList() {
         ArrayList<CinemaDTO> cinemaList = cinemaController.selectAll();
         for(CinemaDTO cinema : cinemaList) {
@@ -221,26 +213,40 @@ public class AdminViewer {
 
     }
 
+    // 극장 상세
     private void printCinemaOne(int id) {
         CinemaDTO cinema = cinemaController.selectOne(id);
-        System.out.println("=================================");
-        System.out.println("극장 이름 : " + cinema.getCinemaName());
-        System.out.println("극장 주소 : " + cinema.getCinemaAddress());
-        System.out.println("극장 전화번호 : " + cinema.getCinemaPhoneNumber());
-        System.out.println("=================================");
+        cinemaViewer.printCinemaOne(cinema);
 
         String message = "1. 수정 2. 삭제 3. 뒤로가기";
         int adminChoice = ScannerUtil.nextInt(scanner, message);
 
         if(adminChoice == 1) {
-            cinemaUpade(cinema);
+            cinemaUpDate(cinema);
             printCinemaOne(id);
         } else if (adminChoice == 2) {
             cinemaDelete(id);
         }
     }
 
-    private void cinemaUpade(CinemaDTO cinema) {
+    // 극장 입력
+    private void cinemaInsert() {
+        CinemaDTO cinema = new CinemaDTO();
+
+        String message = "극장 이름을 입력하세요";
+        cinema.setCinemaName(ScannerUtil.nextLine(scanner, message));
+
+        message = "극장 위치를 입력하세요";
+        cinema.setCinemaAddress(ScannerUtil.nextLine(scanner, message));
+
+        message = "극장 전화번호를 입력하세요";
+        cinema.setCinemaPhoneNumber(ScannerUtil.nextInt(scanner, message));
+
+        cinemaController.insert(cinema);
+    }
+
+    // 극장 수정
+    private void cinemaUpDate(CinemaDTO cinema) {
 
         String message = "극장 이름을 다시 입력하세요";
         cinema.setCinemaName(ScannerUtil.nextLine(scanner, message));
@@ -254,6 +260,7 @@ public class AdminViewer {
         cinemaController.update(cinema);
     }
 
+    // 극장 삭제
     private void cinemaDelete(int id) {
         String message = "정말로 삭제하시겠습니까? Y/N";
         String answer = ScannerUtil.nextLine(scanner, message);
@@ -263,6 +270,7 @@ public class AdminViewer {
         }
     }
 
+    // 영화 메인
     private void movieEdit() {
         String message = "1. 영화 등록 2. 영화 정보 수정 3. 뒤로 가기";
         int adminChoice = ScannerUtil.nextInt(scanner, message);
@@ -274,6 +282,44 @@ public class AdminViewer {
         }
     }
 
+    //영화 목록
+    private void printMovieList() {
+        ArrayList<MovieDTO> movieList = movieController.selectAll();
+        for(MovieDTO movie : movieList) {
+            System.out.printf("%d. %s\n",movie.getId(), movie.getTitle());
+        }
+
+        String message = "상세보기할 영화 번호를 선택하거나 0번을 눌러 뒤로가세요";
+        int adminChoice = ScannerUtil.nextInt(scanner, message);
+
+        while (!movieController.validateId(adminChoice)) {
+            System.out.println("잘못 입력하셨습니다.");
+            adminChoice = ScannerUtil.nextInt(scanner, message);
+        }
+
+        if(adminChoice != 0) {
+            movieDetail(adminChoice);
+        }
+
+    }
+
+    // 영화 상세
+    private void movieDetail(int id) {
+        MovieDTO movie = movieController.selectOne(id);
+        movieViewer.printMovieOne(movie);
+
+        String message = "1. 수정 2. 삭제 3. 뒤로가기";
+        int adminChoice = ScannerUtil.nextInt(scanner, message);
+
+        if(adminChoice == 1) {
+            movieUpdate(movie);
+            movieDetail(id);
+        } else if (adminChoice == 2) {
+            movieDelete(id);
+        }
+    }
+
+    // 영화 입력
     private void movieInsert() {
         MovieDTO movieDTO = new MovieDTO();
 
@@ -290,47 +336,7 @@ public class AdminViewer {
 
     }
 
-    private void printMovieList() {
-        ArrayList<MovieDTO> movieList = movieController.selectAll();
-        for(MovieDTO movie : movieList) {
-            System.out.printf("%d. %s\n",movie.getId(), movie.getTitle());
-        }
-
-        String message = "상세보기할 영화 번호를 선택하거나 0번을 눌러 뒤로가세요";
-        int adminChoice = ScannerUtil.nextInt(scanner, message);
-
-        while (!movieController.validateId(adminChoice)) {
-            System.out.println("잘못 입력하셨습니다.");
-            adminChoice = ScannerUtil.nextInt(scanner, message);
-        }
-
-        if(adminChoice != 0) {
-            printMovieOne(adminChoice);
-        }
-
-    }
-
-    private void printMovieOne(int id) {
-        MovieDTO movie = movieController.selectOne(id);
-        System.out.println("=================================");
-        System.out.println("영화 제목 : " + movie.getTitle());
-        System.out.println("영화 등급 : " + movie.getGrade());
-        System.out.println("---------------------------------");
-        System.out.println("영화 줄거리");
-        System.out.println(movie.getSummary());
-        System.out.println("=================================");
-
-        String message = "1. 수정 2. 삭제 3. 뒤로가기";
-        int adminChoice = ScannerUtil.nextInt(scanner, message);
-
-        if(adminChoice == 1) {
-            movieUpdate(movie);
-            printMovieOne(id);
-        } else if (adminChoice == 2) {
-            movieDelete(id);
-        }
-    }
-
+    // 영화 수정
     private void movieUpdate(MovieDTO movieDTO) {
         String message = "영화 제목을 다시 입력해주세요";
         movieDTO.setTitle(ScannerUtil.nextLine(scanner, message));
@@ -344,6 +350,7 @@ public class AdminViewer {
         movieController.update(movieDTO);
     }
 
+    // 영화 삭제
     private void movieDelete(int id) {
         String message = "정말로 삭제하시겠습니까? Y/N";
         String answer = ScannerUtil.nextLine(scanner, message);
@@ -353,6 +360,7 @@ public class AdminViewer {
         }
     }
 
+    // 사용자 등급 수정
     private void updateUserGrade() {
         for(int i = 1; i < userController.getListSize(); i++) {
             UserDTO userDTO = userController.selectOne(i);

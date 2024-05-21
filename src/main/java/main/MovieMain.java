@@ -1,6 +1,7 @@
 package main;
 
 import controller.*;
+import model.UserDTO;
 import viewer.*;
 
 import java.util.Scanner;
@@ -11,6 +12,9 @@ public class MovieMain {
         Scanner scanner = new Scanner(System.in);
 
         UserController userController = new UserController();
+        //관리자 생성
+        createAdmin(userController);
+
         MovieController movieController = new MovieController();
         MovieGradeController movieGradeController = new MovieGradeController();
         CinemaController cinemaController = new CinemaController();
@@ -34,9 +38,9 @@ public class MovieMain {
         movieViewer.setUserController(userController);
         movieViewer.setMovieController(movieController);
         movieViewer.setMovieGradeController(movieGradeController);
-        movieViewer.setMovieGradeViewer(movieGradeViewer);
         movieViewer.setScreenInfoController(screenInfoController);
         movieViewer.setCinemaController(cinemaController);
+        movieViewer.setMovieGradeViewer(movieGradeViewer);
 
         movieGradeViewer.setScanner(scanner);
         movieGradeViewer.setUserController(userController);
@@ -54,10 +58,20 @@ public class MovieMain {
         adminViewer.setMovieController(movieController);
         adminViewer.setCinemaController(cinemaController);
         adminViewer.setScreenInfoController(screenInfoController);
-
-
+        adminViewer.setCinemaViewer(cinemaViewer);
+        adminViewer.setMovieViewer(movieViewer);
 
         userViewer.showIndex();
 
+    }
+
+    private static void createAdmin(UserController userController) {
+        UserDTO user = new UserDTO();
+        user.setUid(-999);
+        user.setId("admin");
+        user.setPassword("admin");
+        user.setNickName("admin");
+        user.setGrade(3);
+        userController.insert(user);
     }
 }

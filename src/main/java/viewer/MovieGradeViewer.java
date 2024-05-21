@@ -6,22 +6,19 @@ import controller.UserController;
 import lombok.Setter;
 import model.MovieDTO;
 import model.MovieGradeDTO;
-import model.UserDTO;
 import util.ScannerUtil;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@Setter
 public class MovieGradeViewer {
-    @Setter
     private Scanner scanner;
-    @Setter
     private UserController userController;
-    @Setter
     private MovieController movieController;
-    @Setter
     private MovieGradeController movieGradeController;
 
+    // 영화 평점 메인
     public void showMovieGradeMenu() {
         String message = "1. 영화별 전체 평점 2. 영화별 평론가 평점 3. 영화별 일반 관람객 평점 4. 뒤로가기";
         while (true) {
@@ -39,6 +36,7 @@ public class MovieGradeViewer {
         }
     }
 
+    // 전체 영화 평점
     private void showTotalGrade() {
         ArrayList<MovieDTO> movieList = movieController.selectAll();
         if(movieList.isEmpty()) {
@@ -51,18 +49,7 @@ public class MovieGradeViewer {
         }
     }
 
-    private void showProGrade() {
-        ArrayList<MovieDTO> movieList = movieController.selectAll();
-        if(movieList.isEmpty()) {
-            System.out.println("등록된 영화가 없습니다.");
-        } else {
-            for(MovieDTO movie : movieList) {
-                System.out.println("영화 제목 : " + movie.getTitle());
-                System.out.printf("영화 평점 : %.1f\n", movieGradeController.getMovieProGradeAverage(movie.getId()));
-            }
-        }
-    }
-
+    // 일반 관객 영화 평점
     private void showNormalGrade() {
         ArrayList<MovieDTO> movieList = movieController.selectAll();
         if(movieList.isEmpty()) {
@@ -75,6 +62,20 @@ public class MovieGradeViewer {
         }
     }
 
+    // 평론가 영화 평점
+    private void showProGrade() {
+        ArrayList<MovieDTO> movieList = movieController.selectAll();
+        if(movieList.isEmpty()) {
+            System.out.println("등록된 영화가 없습니다.");
+        } else {
+            for(MovieDTO movie : movieList) {
+                System.out.println("영화 제목 : " + movie.getTitle());
+                System.out.printf("영화 평점 : %.1f\n", movieGradeController.getMovieProGradeAverage(movie.getId()));
+            }
+        }
+    }
+
+    // 평점 입력
     public void insetMovieGrade(int movieId, int writerId, int writerGrade) {
         MovieGradeDTO movieGradeDTO = new MovieGradeDTO();
         movieGradeDTO.setMovieId(movieId);

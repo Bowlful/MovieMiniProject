@@ -44,8 +44,8 @@ public class MovieController {
         return null;
     }
 
-    public void update(MovieDTO movieDTO) {
-        list.set(list.indexOf(movieDTO), movieDTO);
+    public void update(MovieDTO movie) {
+        list.set(list.indexOf(movie), movie);
     }
 
     public void delete(int id) {

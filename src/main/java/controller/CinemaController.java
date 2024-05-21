@@ -27,9 +27,9 @@ public class CinemaController {
         return null;
     }
 
-    public void insert(CinemaDTO cinemaDTO) {
-        cinemaDTO.setId(nextId++);
-        list.add(cinemaDTO);
+    public void insert(CinemaDTO cinema) {
+        cinema.setId(nextId++);
+        list.add(cinema);
     }
 
     public void update(CinemaDTO cinema) {

@@ -21,9 +21,9 @@ public class UserController {
         list.add(userDTO);
     }
 
-    public void insert(UserDTO userDTO) {
-        userDTO.setUid(nextId++);
-        list.add(userDTO);
+    public void insert(UserDTO user) {
+        user.setUid(nextId++);
+        list.add(user);
     }
 
     public boolean validateId(String id) {
@@ -66,8 +66,8 @@ public class UserController {
     }
 
 
-    public void update(UserDTO userDTO) {
-        list.set(list.indexOf(userDTO), userDTO);
+    public void update(UserDTO user) {
+        list.set(list.indexOf(user), user);
     }
 
     public void delete(int id) {

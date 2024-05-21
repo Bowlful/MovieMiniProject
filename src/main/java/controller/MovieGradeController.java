@@ -84,9 +84,9 @@ public class MovieGradeController {
 
 
 
-    public void insert(MovieGradeDTO movieGradeDTO) {
-        movieGradeDTO.setId(nextId++);
-        list.add(movieGradeDTO);
+    public void insert(MovieGradeDTO movieGrade) {
+        movieGrade.setId(nextId++);
+        list.add(movieGrade);
     }
 
 }
