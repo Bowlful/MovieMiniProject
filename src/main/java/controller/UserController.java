@@ -99,10 +99,4 @@ public class UserController {
         return list.size();
     }
 
-    public String selectNicknameById(int id) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUid(id);
-
-        return list.get(list.indexOf(userDTO)).getNickName();
-    }
 }

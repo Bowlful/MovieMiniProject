@@ -79,6 +79,7 @@ public class MovieGradeViewer {
         MovieGradeDTO movieGrade = movieGradeController.selectOneByMovieIdAndWriterId(movieId, writerId);
 
         String message;
+        // 사용자가 평점 입력한적 있는지 체크
         if(movieGrade != null) {
             System.out.println("등록한 평점을 수정합니다.");
             message = "평점은 몇입니까?(1~5)";
