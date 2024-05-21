@@ -12,9 +12,6 @@ public class MovieMain {
         Scanner scanner = new Scanner(System.in);
 
         UserController userController = new UserController();
-        //관리자 생성
-        createAdmin(userController);
-
         MovieController movieController = new MovieController();
         MovieGradeController movieGradeController = new MovieGradeController();
         CinemaController cinemaController = new CinemaController();
@@ -63,15 +60,5 @@ public class MovieMain {
 
         userViewer.showIndex();
 
-    }
-
-    private static void createAdmin(UserController userController) {
-        UserDTO user = new UserDTO();
-        user.setUid(-999);
-        user.setId("admin");
-        user.setPassword("admin");
-        user.setNickName("admin");
-        user.setGrade(3);
-        userController.insert(user);
     }
 }

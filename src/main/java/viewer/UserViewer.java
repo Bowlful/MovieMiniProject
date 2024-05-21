@@ -86,38 +86,31 @@ public class UserViewer {
 
     // 로그인 성공 화면
     private void showMenu() {
-        if(logIn.getGrade() == 3) {
-            // 로그인 성공 관리자 화면
-            String message = "1. 영화 2. 극장 3. 관리자 화면 4. 로그아웃";
-            while (logIn != null) {
-                int userChoice = ScannerUtil.nextInt(scanner, message);
-                if (userChoice == 1) {
-                    movieViewer.showMovie();
-                } else if (userChoice == 2) {
-                    cinemaViewer.showCinema();
-                } else if (userChoice == 3) {
+        String message = "";
+        while (logIn != null) {
+            if(logIn.getGrade() == 3) {
+                message = "1. 영화 2. 극장 3. 관리자 화면 4. 로그아웃";
+            } else {
+                message = "1. 영화 보기 2. 극장 보기 3. 회원 정보 수정 4. 로그아웃";
+            }
+
+            int userChoice = ScannerUtil.nextInt(scanner, message);
+
+            if (userChoice == 1) {
+                movieViewer.showMovie();
+            } else if (userChoice == 2) {
+                cinemaViewer.showCinema();
+            } else if (userChoice == 3) {
+                if(logIn.getGrade() == 3) {
                     adminViewer.showAdminMenu();
-                } else if (userChoice == 4) {
-                    logIn = null;
-                    System.out.println("성공적으로 로그아웃 되었습니다.");
-                }
-            }
-        } else {
-            // 로그인 성공 일반 유저 화면
-            String message = "1. 영화 보기 2. 극장 보기 3. 회원 정보 수정 4. 로그아웃";
-            while (logIn != null) {
-                int userChoice = ScannerUtil.nextInt(scanner, message);
-                if (userChoice == 1) {
-                    movieViewer.showMovie();
-                } else if (userChoice == 2) {
-                    cinemaViewer.showCinema();
-                } else if (userChoice == 3) {
+                } else {
                     printInfo();
-                } else if (userChoice == 4) {
-                    logIn = null;
-                    System.out.println("성공적으로 로그아웃 되었습니다.");
                 }
+            } else if (userChoice == 4) {
+                logIn = null;
+                System.out.println("성공적으로 로그아웃 되었습니다.");
             }
+
         }
     }
 

@@ -32,6 +32,7 @@ public class MovieGradeController {
         return temp;
     }
 
+    // 영화 전체 평점 계산
     public double getMovieTotalGradeAverage(int movieId) {
         int sum = 0;
         int count = 0;
@@ -48,6 +49,7 @@ public class MovieGradeController {
         }
     }
 
+    // 영화 평론가 평점 계산
     public double getMovieProGradeAverage(int movieId) {
         int sum = 0;
         int count = 0;
@@ -65,6 +67,7 @@ public class MovieGradeController {
         }
     }
 
+    // 영화 일반 사용자 평점 계산
     public double getMovieNormalGradeAverage(int movieId) {
         int sum = 0;
         int count = 0;
@@ -81,8 +84,6 @@ public class MovieGradeController {
             return (double) sum / count;
         }
     }
-
-
 
     public void insert(MovieGradeDTO movieGrade) {
         movieGrade.setId(nextId++);

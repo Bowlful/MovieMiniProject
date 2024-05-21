@@ -12,14 +12,19 @@ public class UserController {
     public UserController() {
         list = new ArrayList<>();
         nextId = 1;
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUid(-999);
-        userDTO.setId("admin");
-        userDTO.setPassword("admin");
-        userDTO.setNickName("admin");
-        userDTO.setGrade(3);
-        list.add(userDTO);
+        createAdmin();
     }
+
+    private void createAdmin() {
+        UserDTO user = new UserDTO();
+        user.setUid(-999);
+        user.setId("admin");
+        user.setPassword("admin");
+        user.setNickName("admin");
+        user.setGrade(3);
+        list.add(user);
+    }
+
 
     public void insert(UserDTO user) {
         user.setUid(nextId++);
@@ -55,11 +60,13 @@ public class UserController {
         return null;
     }
 
+    // 사용자 아이디로 닉네임 획득
     public String getUserNickNameById(int id) {
         UserDTO user = selectOne(id);
         return user.getNickName();
     }
 
+    // 사용자 번호로 등급 획득
     public int getGradeByUid(int uid) {
         UserDTO user = selectOne(uid);
         return user.getGrade();
